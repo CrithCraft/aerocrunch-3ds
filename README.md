@@ -4,12 +4,9 @@
 Code game engine for Nintendo 3DS.
 
 **What AeroCrunch used:**
-1. citro3d
-2. citro2d
-- For talk with 3DS GPU
-
-3.Dungeon tileset II by 0x72
-- https://0x72.itch.io/dungeontileset-ii
+1. citro3d for talk with 3DS 3D GPU
+2. citro2d - for talk with 3DS 2D GPU
+3.Dungeon tileset II by 0x72 - https://0x72.itch.io/dungeontileset-ii
 
 
 **Other**
