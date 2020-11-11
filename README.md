@@ -11,5 +11,6 @@ Code game engine for Nintendo 3DS.
 3. Dungeon tileset II by 0x72 - https://0x72.itch.io/dungeontileset-ii
 
 
-**Other**
+**Other:**
+
 *Need rewrite later, created for creating games with lite for read code.*
