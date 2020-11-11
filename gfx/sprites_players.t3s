@@ -1,0 +1,21 @@
+--atlas -f rgba8888 -z auto
+sprite/Idle_1.png
+sprite/Idle_2.png
+sprite/Idle_3.png
+sprite/Idle_4.png
+sprite/Run_1.png
+sprite/Run_2.png
+sprite/Run_3.png
+sprite/Run_4.png
+sprite/Weapon/1.png
+sprite/Weapon/2.png
+sprite/Weapon/3.png
+sprite/Weapon/4.png
+sprite/Weapon/5.png
+sprite/Weapon/6.png
+sprite/Enemy/Skeleton/Run_1.png
+sprite/Enemy/Skeleton/Run_2.png
+sprite/Enemy/Skeleton/Run_3.png
+sprite/Enemy/Skeleton/Run_4.png
+gui/ui_heart_empty.png
+gui/ui_heart_full.png
