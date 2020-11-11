@@ -3,7 +3,7 @@
 **About**: 
 Code game engine for Nintendo 3DS.
 
- <img src="preview.png" width="400" title="hover text">
+<img src="preview.png" width="400" title="hover text">
 
 **What AeroCrunch used:**
 1. citro3d for talk with 3DS 3D GPU
