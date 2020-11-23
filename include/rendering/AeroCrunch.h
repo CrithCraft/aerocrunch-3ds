@@ -42,3 +42,4 @@ void Aer_DrawIndicator(size_t id, int varible, int max_indicator_varible, C2D_Sp
 void Aer_MoveTimer(size_t id, int ticktime);
 bool Aer_TimerDone(size_t id);
 void Aer_ResetTimer(size_t id);
+bool Aer_RoomLoop();

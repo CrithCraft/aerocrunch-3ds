@@ -20,42 +20,43 @@ int player_hearts = 3;
 
 bool firstTurn = true;
 
-// Update top graphics
-void Draw_001_top(C2D_SpriteSheet spriteSheet_players, C2D_SpriteSheet spriteSheet_map){
-    // Setup graphic
-    if (firstTurn == true){
-        srand(time(NULL));
+// SpriteSheet Initilize
+static C2D_SpriteSheet spriteSheet_players;
+static C2D_SpriteSheet spriteSheet_map;
 
-        // Map sprite
-        Aer_CreateSprite(1, spriteSheet_map, 0, 0, 0);
+void Setup_001() {
+    srand(time(NULL));
+    // Map sprite
+    Aer_CreateSprite(1, spriteSheet_map, 0, 0, 0);
 
-        // Weapon sprite
-        Aer_CreateSprite(2, spriteSheet_players, 10, -100, -100);
-        Aer_SpriteCenter(2, 0, 1);
-        Aer_SpriteScale(2, 2, 2);
+    // Weapon sprite
+    Aer_CreateSprite(2, spriteSheet_players, 10, -100, -100);
+    Aer_SpriteCenter(2, 0, 1);
+    Aer_SpriteScale(2, 2, 2);
 
-        // Player sprite
-        Aer_CreateSprite(3, spriteSheet_players, 0, 70, 70);
-        Aer_SpriteCollisionBox(3,32,56);
+    // Player sprite
+    Aer_CreateSprite(3, spriteSheet_players, 0, 70, 70);
+    Aer_SpriteCollisionBox(3,32,56);
 
-        // Generate weapons
-        for(int i=4; i<=4+max_weapons-1; i++){
-          Aer_CreateSprite(i, spriteSheet_players, 7+(i-3), (((rand()%6)+1)*32*4)-32+12, (((rand()%6)+1)*32*4)-32+4);
-          Aer_SpriteCollisionBox(i,16,28);
-        }
-
-        // Generate enemy
-        for(int i=10; i<=10+max_enemy; i++){
-          Aer_CreateSprite(i, spriteSheet_players, 14, (((rand()%6)+1)*32*4)-32-12, (((rand()%6)+1)*32*4)-32-12);
-          Aer_SpriteScale(i, 2, 2);
-          Aer_SpriteCollisionBox(i,32, 40);
-        }
-
-        // Initilize indicator
-        Aer_InitIndicator(31, 5, spriteSheet_players);
-
-        firstTurn = false;
+    // Generate weapons
+    for(int i=4; i<=4+max_weapons-1; i++){
+        Aer_CreateSprite(i, spriteSheet_players, 7+(i-3), (((rand()%6)+1)*32*4)-32+12, (((rand()%6)+1)*32*4)-32+4);
+        Aer_SpriteCollisionBox(i,16,28);
     }
+
+    // Generate enemy
+    for(int i=10; i<=10+max_enemy; i++){
+        Aer_CreateSprite(i, spriteSheet_players, 14, (((rand()%6)+1)*32*4)-32-12, (((rand()%6)+1)*32*4)-32-12);
+        Aer_SpriteScale(i, 2, 2);
+        Aer_SpriteCollisionBox(i,32, 40);
+    }
+
+    // Initilize indicator
+    Aer_InitIndicator(31, 5, spriteSheet_players);
+}
+
+// Update top graphics
+void Draw_001_top(){
 
     // Write event and render graphics
 
@@ -64,10 +65,14 @@ void Draw_001_top(C2D_SpriteSheet spriteSheet_players, C2D_SpriteSheet spriteShe
     Aer_CameraShiftCenter(-32/2, -56/2);
 
     // Set move player with DPad
-    Aer_SpriteDPadMove(3, 1);
+    Aer_SpriteDPadMove(3, 2);
 
     // We clay to sprites
     Aer_SpriteConnects(2,3,15,35);
+
+    if(Aer_KeyHeld(KEY_X)){
+        // Aer_NextRoom();
+    }
 
     // Set animation for player weapon
     if(Aer_KeyHeld(KEY_A)){
@@ -78,9 +83,9 @@ void Draw_001_top(C2D_SpriteSheet spriteSheet_players, C2D_SpriteSheet spriteShe
     }
     else{
         if (weapon_rotate > 0)
-          weapon_rotate=weapon_rotate-weapon_speed;
+            weapon_rotate=weapon_rotate-weapon_speed;
         else
-          weapon_rotate = 0;
+            weapon_rotate = 0;
     }
     // Set rotate from animation cycle
     Aer_SpriteRotate(2, weapon_rotate);
@@ -166,6 +171,36 @@ void Draw_001_top(C2D_SpriteSheet spriteSheet_players, C2D_SpriteSheet spriteShe
 }
 
 // Update bottom graphics
-void Draw_001_bottom(C2D_SpriteSheet spriteSheet_players){
+void Draw_001_bottom(){
     // Later
+}
+
+void Load_001(C3D_RenderTarget* top, C3D_RenderTarget* bottom){
+    // Set spritesheet
+    spriteSheet_players = C2D_SpriteSheetLoad("romfs:/gfx/sprites_players.t3x");
+    if (!spriteSheet_players) svcBreak(USERBREAK_PANIC);
+    spriteSheet_map = C2D_SpriteSheetLoad("romfs:/gfx/map.t3x");
+    if (!spriteSheet_map) svcBreak(USERBREAK_PANIC);
+
+    Setup_001();
+    
+    while(Aer_RoomLoop()) {
+        // Begin render frame the scene
+        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+
+        // Draw top screen
+        Aer_RenderScreen(top);
+        Draw_001_top();
+
+        // Draw top screen
+        Aer_RenderScreen(bottom);
+        Draw_001_bottom();
+
+        // End render frame the scene
+        C3D_FrameEnd(0);
+
+        if (Aer_BreakCheck()) break;
+    }
+    C2D_SpriteSheetFree(spriteSheet_map);
+    C2D_SpriteSheetFree(spriteSheet_players);
 }

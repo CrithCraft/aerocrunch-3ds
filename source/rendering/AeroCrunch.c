@@ -65,13 +65,13 @@ void Aer_DrawSprite(size_t id){
 			if(Aer_SpriteTouchPlace(id, camera_x-distanse, camera_y-distanse, WIDTH+2*distanse, HEIGHT+2*distanse)){
 				Sprite* sprite = &sprites[id];
 				C2D_SpriteSetPos(&sprite->spr, sprite->x-camera_x, sprite->y-camera_y);
-			  C2D_DrawSprite(&sprite->spr);
+				C2D_DrawSprite(&sprite->spr);
 			}
 	}
 	else{
 		Sprite* sprite = &sprites[id];
 		C2D_SpriteSetPos(&sprite->spr, sprite->x-camera_x, sprite->y-camera_y);
-	  C2D_DrawSprite(&sprite->spr);
+		C2D_DrawSprite(&sprite->spr);
 	}
 }
 
@@ -102,7 +102,7 @@ void Aer_SpritePosition(size_t id, float x, float y){
 	sprite->prev_y = sprite->y;
 	sprite->x = x;
 	sprite->y = y;
-  C2D_SpriteSetPos(&sprite->spr, sprite->x, sprite->y);
+	C2D_SpriteSetPos(&sprite->spr, sprite->x, sprite->y);
 }
 
 void Aer_ChangeSprite(size_t id, C2D_SpriteSheet sheet, size_t sprite_id){
@@ -149,18 +149,20 @@ bool Aer_SpriteTouched(size_t id, size_t id2){
 	float second_width = sprite2->col_box_x;
 	float second_height = sprite2->col_box_y;
 
-  if ((first_x + width >= second_x) && (first_x <= second_x + second_width) && (first_y + height >= second_y) && (first_y <= second_y + second_height))
-      return true;
-  else
-      return false;
+	if ((first_x + width >= second_x) && (first_x <= second_x + second_width) 
+	&& (first_y + height >= second_y) && (first_y <= second_y + second_height))
+		return true;
+	
+	return false;
 }
 
 bool Aer_SpriteTouchPlace(size_t id, float second_x, float second_y, float second_width, float second_height){
 	Sprite* sprite = &sprites[id];
-	if ((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) && (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height))
-      return true;
-  else
-      return false;
+	if ((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) 
+	&& (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height))
+		return true;
+	
+	return false;
 }
 
 void Aer_SpriteScale(size_t id, float scale_x, float scale_y){
@@ -184,26 +186,25 @@ void Aer_SpritePlaceRestore(size_t id){
 
 bool Aer_BreakCheck(){
 	hidScanInput();
-	if(hidKeysHeld() & KEY_START)
-		return true;
-	else
-		return false;
+	if(hidKeysHeld() & KEY_START) return true;
+	
+	return false;
 }
 
 void Aer_SpriteAnimate(size_t id, C2D_SpriteSheet sheet, int start_frame, int max_frame, int speed){
 	Sprite* sprite = &sprites[id];
 	if(sprite->animation < max_frame*speed){
-			if(fmod(sprite->animation, speed) == 0){}
-					Aer_ChangeSprite(id, sheet, start_frame+sprite->animation/speed);
-			sprite->animation = sprite->animation + 1;
-	}
-	else
-			sprite->animation = 0;
+		if(fmod(sprite->animation, speed) == 0){}
+				Aer_ChangeSprite(id, sheet, start_frame+sprite->animation/speed);
+		sprite->animation = sprite->animation + 1;
+	} 
+	else sprite->animation = 0;
 }
 
 bool Aer_DPadMove(){
 	hidScanInput();
-	if((hidKeysHeld() & KEY_LEFT) || (hidKeysHeld() & KEY_RIGHT) || (hidKeysHeld() & KEY_UP) || (hidKeysHeld() & KEY_DOWN))
+	if((hidKeysHeld() & KEY_LEFT) || (hidKeysHeld() & KEY_RIGHT) 
+	|| (hidKeysHeld() & KEY_UP) || (hidKeysHeld() & KEY_DOWN))
 		return true;
 	else
 		return false;
@@ -240,11 +241,11 @@ void Aer_SpriteConnects(size_t id, size_t id2, float x, float y){
 }
 
 bool Aer_KeyHeld(u32 key){
-		hidScanInput();
-		if(hidKeysHeld() & key)
-			return true;
-		else
-			return false;
+	hidScanInput();
+	if(hidKeysHeld() & key)
+		return true;
+	else
+		return false;
 }
 
 bool Aer_KeyRelesed(u32 key){
@@ -259,11 +260,14 @@ void Aer_SolidSpaceChecker(float second_x, float second_y, float second_width, f
 	for(int i=1; i<=sprites_used; i++){
 		Sprite* sprite = &sprites[sprite_id_arr[i]];
 		if(!((sprite->col_box_x == 0)&&(sprite->col_box_y == 0))){
-			if((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) && (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height)){
-				if(!((sprite->prev_x + sprite->col_box_x >= second_x) && (sprite->prev_x <= second_x + second_width) && (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height))){
+			if((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) 
+			&& (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height)){
+				if(!((sprite->prev_x + sprite->col_box_x >= second_x) && (sprite->prev_x <= second_x + second_width) 
+				&& (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height))){
 					sprite->x = sprite->prev_x;
 				}
-				else if(!((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) && (sprite->prev_y + sprite->col_box_y >= second_y) && (sprite->prev_y <= second_y + second_height))){
+				else if(!((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) 
+				&& (sprite->prev_y + sprite->col_box_y >= second_y) && (sprite->prev_y <= second_y + second_height))){
 					sprite->y = sprite->prev_y;
 				}
 				else{
@@ -277,11 +281,14 @@ void Aer_SolidSpaceChecker(float second_x, float second_y, float second_width, f
 
 void Aer_SpriteSmartPlaceRestore(size_t id, float second_x, float second_y, float second_width, float second_height){
 	Sprite* sprite = &sprites[id];
-	if((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) && (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height)){
-		if(!((sprite->prev_x + sprite->col_box_x >= second_x) && (sprite->prev_x <= second_x + second_width) && (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height))){
+	if((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) 
+	&& (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height)){
+		if(!((sprite->prev_x + sprite->col_box_x >= second_x) && (sprite->prev_x <= second_x + second_width) 
+		&& (sprite->y + sprite->col_box_y >= second_y) && (sprite->y <= second_y + second_height))){
 			sprite->x = sprite->prev_x;
 		}
-		else if(!((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) && (sprite->prev_y + sprite->col_box_y >= second_y) && (sprite->prev_y <= second_y + second_height))){
+		else if(!((sprite->x + sprite->col_box_x >= second_x) && (sprite->x <= second_x + second_width) 
+		&& (sprite->prev_y + sprite->col_box_y >= second_y) && (sprite->prev_y <= second_y + second_height))){
 			sprite->y = sprite->prev_y;
 		}
 		else{
@@ -302,8 +309,7 @@ void Aer_CameraShiftCenter(float x, float y){
 }
 
 void Aer_InitIndicator(size_t id, int max_indicator_varible, C2D_SpriteSheet sheet){
-	for(int i = 0; i < max_indicator_varible; i++)
-		Aer_CreateSprite(id+i, sheet, 0, 0, 0);
+	for(int i = 0; i < max_indicator_varible; i++) Aer_CreateSprite(id+i, sheet, 0, 0, 0);
 }
 
 void Aer_DrawIndicator(size_t id, int varible, int max_indicator_varible, C2D_SpriteSheet sheet, int empty_indicator_part_id, int full_indicator_part_id,  float x, float y, float distanse){
@@ -337,4 +343,9 @@ bool Aer_TimerDone(size_t id){
 void Aer_ResetTimer(size_t id){
 	timer[id] = 0;
 	timerdone[id] = false;
+}
+
+bool Aer_RoomLoop() {
+	return aptMainLoop();
+	// Checking room teleport
 }
